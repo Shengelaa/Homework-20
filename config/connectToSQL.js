@@ -42,6 +42,19 @@ const getUserById = async (id) => {
   return user;
 };
 
+const getBlogById = async (id) => {
+  const [result] = await blogPool.query(`SELECT * FROM blogs WHERE id = ?`, [
+    id,
+  ]);
+
+  const blog = result[0];
+  if (!blog) {
+    return null;
+  }
+
+  return blog;
+};
+
 const createBlog = async (user_id, title, content) => {
   const isValidUser = await getUserById(user_id);
   if (!isValidUser) {
@@ -175,4 +188,5 @@ module.exports = {
   createBlog,
   updateBlog,
   deleteBlog,
+  getBlogById,
 };

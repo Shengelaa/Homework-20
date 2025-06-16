@@ -10,6 +10,8 @@ const {
   createBlog,
   updateBlog,
   deleteBlog,
+  getAllBlogs,
+  getBlogById,
 } = require("./config/connectToSQL");
 
 const app = express();
@@ -17,6 +19,21 @@ app.use(express.json());
 app.get("/users", async (req, res) => {
   const resp = await getAllUsers();
   res.json(resp);
+});
+
+app.get("/blogs", async (req, res) => {
+  const resp = await getAllBlogs();
+  res.json(resp);
+});
+
+app.get("/blogs/:id", async (req, res) => {
+  const { id } = req.params;
+  const result = await getBlogById(id);
+  if (!result) {
+    res.status(404).json("No blog found with that id");
+  }
+
+  res.json(result);
 });
 
 app.get("/users/:id", async (req, res) => {
